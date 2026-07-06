@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productivity Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1>✦ Productivity Dashboard</h1>
+        </header>
+
+        <main class="dashboard">
+            <!-- Columna izquierda -->
+            <div class="left-column">
+                <!-- Pomodoro -->
+                <section class="panel panel-pomodoro">
+                    <div class="panel-header">
+                        <h2>Pomodoro</h2>
+                        <button class="reset-btn" data-module="pomodoro" title="Reiniciar Pomodoro">↺</button>
+                    </div>
+                    <div class="pomodoro-display">
+                        <span class="timer" id="pomodoroTimer">25:00</span>
+                    </div>
+                    <div class="pomodoro-controls">
+                        <button class="btn-work" id="btnWork">Trabajo</button>
+                        <button class="btn-rest" id="btnRest">Descanso</button>
+                    </div>
+                    <div class="pomodoro-status">
+                        <span id="pomodoroStatus">⏸ Detenido</span>
+                    </div>
+                </section>
+
+                <!-- Checklist -->
+                <section class="panel panel-checklist">
+                    <div class="panel-header">
+                        <h2>Checklist</h2>
+                        <button class="reset-btn" data-module="checklist" title="Reiniciar Checklist">↺</button>
+                    </div>
+                    <div class="checklist-input">
+                        <input type="text" id="taskInput" placeholder="Nueva tarea..." />
+                        <button id="addTaskBtn">+</button>
+                    </div>
+                    <div class="checklist-lists">
+                        <div class="task-list">
+                            <h3>Activas</h3>
+                            <ul id="activeTasks"></ul>
+                        </div>
+                        <div class="task-list completed">
+                            <h3>Completadas</h3>
+                            <ul id="completedTasks"></ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Columna derecha -->
+            <div class="right-column">
+                <section class="panel panel-timeblocking">
+                    <div class="panel-header">
+                        <h2>Timeblocking</h2>
+                        <button class="reset-btn" data-module="timeblocking" title="Reiniciar Timeblocking">↺</button>
+                    </div>
+                    <div class="timeblocking-form">
+                        <input type="time" id="tbStart" value="09:00" />
+                        <input type="number" id="tbDuration" value="60" min="15" step="15" />
+                        <input type="text" id="tbTitle" placeholder="Título" />
+                        <button id="addBlockBtn">+ Añadir</button>
+                    </div>
+                    <div class="timeblocking-container">
+                        <div class="time-labels" id="timeLabels"></div>
+                        <div class="time-grid" id="timeGrid">
+                            <!-- Los bloques se inyectan aquí -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
