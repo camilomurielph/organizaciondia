@@ -1,0 +1,564 @@
+/* ===== Reset & Base ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #121212;
+    font-family: 'Inter', sans-serif;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.app {
+    max-width: 1440px;
+    width: 100%;
+}
+
+/* ===== Header ===== */
+header {
+    margin-bottom: 32px;
+}
+
+header h1 {
+    font-weight: 600;
+    font-size: 2rem;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+}
+
+/* ===== Dashboard Layout ===== */
+.dashboard {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.left-column {
+    flex: 1 1 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 300px;
+}
+
+.right-column {
+    flex: 2 1 600px;
+    min-width: 400px;
+}
+
+/* ===== Paneles ===== */
+.panel {
+    background: #1e1e2f;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    border: 1px solid #2a2a3a;
+    transition: border-color 0.2s;
+}
+
+.panel:hover {
+    border-color: #3a3a4a;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.panel-header h2 {
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: -0.3px;
+    color: #ffffff;
+}
+
+.reset-btn {
+    background: transparent;
+    border: none;
+    color: #8888aa;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.reset-btn:hover {
+    color: #ff6b6b;
+    transform: rotate(30deg);
+}
+
+/* ===== Pomodoro ===== */
+.pomodoro-display {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.timer {
+    font-size: 4.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+}
+
+.pomodoro-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.pomodoro-controls button {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    background: #2a2a3a;
+    color: #e0e0e0;
+}
+
+.pomodoro-controls button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.pomodoro-controls .btn-work {
+    background: #bb86fc;
+    color: #121212;
+}
+
+.pomodoro-controls .btn-work:hover {
+    background: #cba2ff;
+}
+
+.pomodoro-controls .btn-rest {
+    background: #03dac6;
+    color: #121212;
+}
+
+.pomodoro-controls .btn-rest:hover {
+    background: #26e6d0;
+}
+
+.pomodoro-status {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #8888aa;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Checklist ===== */
+.checklist-input {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.checklist-input input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 40px;
+    border: 1px solid #2a2a3a;
+    background: #14141f;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.checklist-input input:focus {
+    border-color: #bb86fc;
+}
+
+.checklist-input button {
+    padding: 10px 20px;
+    border-radius: 40px;
+    border: none;
+    background: #bb86fc;
+    color: #121212;
+    font-weight: 600;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.checklist-input button:hover {
+    background: #cba2ff;
+}
+
+.checklist-lists {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.checklist-lists::-webkit-scrollbar {
+    width: 4px;
+}
+
+.checklist-lists::-webkit-scrollbar-thumb {
+    background: #3a3a4a;
+    border-radius: 8px;
+}
+
+.task-list h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #8888aa;
+    margin-bottom: 8px;
+}
+
+.task-list ul {
+    list-style: none;
+}
+
+.task-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 4px;
+    border-bottom: 1px solid #2a2a3a;
+    transition: background 0.15s;
+}
+
+.task-list li:hover {
+    background: #242438;
+    border-radius: 8px;
+}
+
+.task-list li input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #555577;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s;
+    position: relative;
+}
+
+.task-list li input[type="checkbox"]:checked {
+    background: #bb86fc;
+    border-color: #bb86fc;
+}
+
+.task-list li input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: #121212;
+    font-size: 14px;
+    position: absolute;
+    top: -2px;
+    left: 2px;
+}
+
+.task-list li .task-text {
+    flex: 1;
+    font-size: 0.95rem;
+    word-break: break-word;
+    cursor: text;
+}
+
+.task-list li .task-text.completed {
+    text-decoration: line-through;
+    color: #8888aa;
+}
+
+.task-list li .task-text.editing {
+    background: #14141f;
+    padding: 2px 6px;
+    border-radius: 4px;
+    outline: 1px solid #bb86fc;
+}
+
+.task-list li .task-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.task-list li .task-actions button {
+    background: transparent;
+    border: none;
+    color: #666688;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.task-list li .task-actions button:hover {
+    background: #2a2a3a;
+    color: #ffffff;
+}
+
+.task-list li .task-actions .delete-btn:hover {
+    color: #ff6b6b;
+}
+
+/* ===== Timeblocking ===== */
+.timeblocking-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.timeblocking-form input,
+.timeblocking-form button {
+    padding: 8px 12px;
+    border-radius: 40px;
+    border: 1px solid #2a2a3a;
+    background: #14141f;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.timeblocking-form input:focus {
+    border-color: #bb86fc;
+}
+
+.timeblocking-form input[type="time"] {
+    width: 100px;
+}
+
+.timeblocking-form input[type="number"] {
+    width: 80px;
+}
+
+.timeblocking-form input[type="text"] {
+    flex: 1;
+    min-width: 120px;
+}
+
+.timeblocking-form button {
+    background: #bb86fc;
+    color: #121212;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 8px 20px;
+}
+
+.timeblocking-form button:hover {
+    background: #cba2ff;
+}
+
+.timeblocking-container {
+    display: flex;
+    position: relative;
+    height: 720px; /* 12 horas * 60px */
+    overflow-y: auto;
+    background: #14141f;
+    border-radius: 16px;
+    border: 1px solid #2a2a3a;
+    padding: 0 0 0 60px;
+    scrollbar-width: thin;
+}
+
+.timeblocking-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.timeblocking-container::-webkit-scrollbar-thumb {
+    background: #3a3a4a;
+    border-radius: 8px;
+}
+
+.time-labels {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    flex-shrink: 0;
+    position: sticky;
+    left: 0;
+    background: #14141f;
+    z-index: 2;
+    border-right: 1px solid #2a2a3a;
+}
+
+.time-label {
+    height: 60px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-right: 12px;
+    font-size: 0.75rem;
+    color: #8888aa;
+    font-weight: 500;
+    border-bottom: 1px solid #1e1e2a;
+}
+
+.time-grid {
+    flex: 1;
+    position: relative;
+    min-height: 100%;
+    background: transparent;
+}
+
+/* ===== Bloques de Timeblocking ===== */
+.tb-block {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-radius: 10px;
+    padding: 6px 10px;
+    cursor: grab;
+    font-size: 0.8rem;
+    font-weight: 500;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 30px;
+}
+
+.tb-block:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.tb-block .tb-title {
+    font-weight: 600;
+    font-size: 0.85rem;
+    line-height: 1.3;
+}
+
+.tb-block .tb-time {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+.tb-block .tb-delete {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.tb-block:hover .tb-delete {
+    opacity: 1;
+}
+
+.tb-block .tb-delete:hover {
+    background: #ff6b6b;
+}
+
+/* Handle de redimensionamiento (inferior) */
+.tb-block .resize-handle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    cursor: ns-resize;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0 0 10px 10px;
+    transition: background 0.2s;
+}
+
+.tb-block .resize-handle:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Colores de bloques (asignados aleatoriamente) */
+.tb-block.color-1 {
+    background: #bb86fc;
+    color: #121212;
+}
+.tb-block.color-2 {
+    background: #03dac6;
+    color: #121212;
+}
+.tb-block.color-3 {
+    background: #ff6b6b;
+    color: #121212;
+}
+.tb-block.color-4 {
+    background: #f9ca24;
+    color: #121212;
+}
+.tb-block.color-5 {
+    background: #6ab04c;
+    color: #121212;
+}
+.tb-block.color-6 {
+    background: #686de0;
+    color: #121212;
+}
+.tb-block.color-7 {
+    background: #e056a0;
+    color: #121212;
+}
+.tb-block.color-8 {
+    background: #f0932b;
+    color: #121212;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 860px) {
+    .dashboard {
+        flex-direction: column;
+    }
+    .left-column,
+    .right-column {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .timeblocking-container {
+        height: 480px;
+        padding-left: 50px;
+    }
+    .time-label {
+        height: 60px;
+        font-size: 0.65rem;
+    }
+    .timeblocking-form {
+        flex-wrap: wrap;
+    }
+    .timeblocking-form input[type="time"] {
+        width: 80px;
+    }
+    .timeblocking-form input[type="number"] {
+        width: 70px;
+    }
+}
