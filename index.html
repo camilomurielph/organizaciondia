@@ -1,1 +1,1131 @@
-hola mundo
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productivity Dashboard</title>
+    <style>
+        /* ===== Reset & Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #121212;
+            font-family: 'Inter', sans-serif;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .app {
+            max-width: 1440px;
+            width: 100%;
+        }
+
+        /* ===== Header ===== */
+        header {
+            margin-bottom: 32px;
+        }
+
+        header h1 {
+            font-weight: 600;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        /* ===== Dashboard Layout ===== */
+        .dashboard {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .left-column {
+            flex: 1 1 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            min-width: 300px;
+        }
+
+        .right-column {
+            flex: 2 1 600px;
+            min-width: 400px;
+        }
+
+        /* ===== Paneles ===== */
+        .panel {
+            background: #1e1e2f;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            border: 1px solid #2a2a3a;
+            transition: border-color 0.2s;
+        }
+
+        .panel:hover {
+            border-color: #3a3a4a;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-weight: 600;
+            font-size: 1.4rem;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+        }
+
+        .reset-btn {
+            background: transparent;
+            border: none;
+            color: #8888aa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .reset-btn:hover {
+            color: #ff6b6b;
+            transform: rotate(30deg);
+        }
+
+        /* ===== Pomodoro ===== */
+        .pomodoro-display {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .timer {
+            font-size: 4.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffffff;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pomodoro-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .pomodoro-controls button {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s;
+            background: #2a2a3a;
+            color: #e0e0e0;
+        }
+
+        .pomodoro-controls button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .pomodoro-controls .btn-work {
+            background: #bb86fc;
+            color: #121212;
+        }
+
+        .pomodoro-controls .btn-work:hover {
+            background: #cba2ff;
+        }
+
+        .pomodoro-controls .btn-rest {
+            background: #03dac6;
+            color: #121212;
+        }
+
+        .pomodoro-controls .btn-rest:hover {
+            background: #26e6d0;
+        }
+
+        .pomodoro-status {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #8888aa;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== Checklist ===== */
+        .checklist-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .checklist-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 40px;
+            border: 1px solid #2a2a3a;
+            background: #14141f;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .checklist-input input:focus {
+            border-color: #bb86fc;
+        }
+
+        .checklist-input button {
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: none;
+            background: #bb86fc;
+            color: #121212;
+            font-weight: 600;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .checklist-input button:hover {
+            background: #cba2ff;
+        }
+
+        .checklist-lists {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .checklist-lists::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .checklist-lists::-webkit-scrollbar-thumb {
+            background: #3a3a4a;
+            border-radius: 8px;
+        }
+
+        .task-list h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #8888aa;
+            margin-bottom: 8px;
+        }
+
+        .task-list ul {
+            list-style: none;
+        }
+
+        .task-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 4px;
+            border-bottom: 1px solid #2a2a3a;
+            transition: background 0.15s;
+        }
+
+        .task-list li:hover {
+            background: #242438;
+            border-radius: 8px;
+        }
+
+        .task-list li input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #555577;
+            border-radius: 4px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .task-list li input[type="checkbox"]:checked {
+            background: #bb86fc;
+            border-color: #bb86fc;
+        }
+
+        .task-list li input[type="checkbox"]:checked::after {
+            content: "✓";
+            color: #121212;
+            font-size: 14px;
+            position: absolute;
+            top: -2px;
+            left: 2px;
+        }
+
+        .task-list li .task-text {
+            flex: 1;
+            font-size: 0.95rem;
+            word-break: break-word;
+            cursor: text;
+        }
+
+        .task-list li .task-text.completed {
+            text-decoration: line-through;
+            color: #8888aa;
+        }
+
+        .task-list li .task-text.editing {
+            background: #14141f;
+            padding: 2px 6px;
+            border-radius: 4px;
+            outline: 1px solid #bb86fc;
+        }
+
+        .task-list li .task-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .task-list li .task-actions button {
+            background: transparent;
+            border: none;
+            color: #666688;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .task-list li .task-actions button:hover {
+            background: #2a2a3a;
+            color: #ffffff;
+        }
+
+        .task-list li .task-actions .delete-btn:hover {
+            color: #ff6b6b;
+        }
+
+        /* ===== Timeblocking ===== */
+        .timeblocking-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .timeblocking-form input,
+        .timeblocking-form button {
+            padding: 8px 12px;
+            border-radius: 40px;
+            border: 1px solid #2a2a3a;
+            background: #14141f;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .timeblocking-form input:focus {
+            border-color: #bb86fc;
+        }
+
+        .timeblocking-form input[type="time"] {
+            width: 100px;
+        }
+
+        .timeblocking-form input[type="number"] {
+            width: 80px;
+        }
+
+        .timeblocking-form input[type="text"] {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .timeblocking-form button {
+            background: #bb86fc;
+            color: #121212;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            padding: 8px 20px;
+        }
+
+        .timeblocking-form button:hover {
+            background: #cba2ff;
+        }
+
+        .timeblocking-container {
+            display: flex;
+            position: relative;
+            height: 720px;
+            overflow-y: auto;
+            background: #14141f;
+            border-radius: 16px;
+            border: 1px solid #2a2a3a;
+            padding: 0 0 0 60px;
+            scrollbar-width: thin;
+        }
+
+        .timeblocking-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .timeblocking-container::-webkit-scrollbar-thumb {
+            background: #3a3a4a;
+            border-radius: 8px;
+        }
+
+        .time-labels {
+            display: flex;
+            flex-direction: column;
+            width: 60px;
+            flex-shrink: 0;
+            position: sticky;
+            left: 0;
+            background: #14141f;
+            z-index: 2;
+            border-right: 1px solid #2a2a3a;
+        }
+
+        .time-label {
+            height: 60px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-size: 0.75rem;
+            color: #8888aa;
+            font-weight: 500;
+            border-bottom: 1px solid #1e1e2a;
+        }
+
+        .time-grid {
+            flex: 1;
+            position: relative;
+            min-height: 100%;
+            background: transparent;
+        }
+
+        /* ===== Bloques de Timeblocking ===== */
+        .tb-block {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border-radius: 10px;
+            padding: 6px 10px;
+            cursor: grab;
+            font-size: 0.8rem;
+            font-weight: 500;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.2s;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 30px;
+        }
+
+        .tb-block:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .tb-block .tb-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            line-height: 1.3;
+        }
+
+        .tb-block .tb-time {
+            font-size: 0.65rem;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .tb-block .tb-delete {
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.4);
+            border: none;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            line-height: 18px;
+            text-align: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tb-block:hover .tb-delete {
+            opacity: 1;
+        }
+
+        .tb-block .tb-delete:hover {
+            background: #ff6b6b;
+        }
+
+        .tb-block .resize-handle {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            cursor: ns-resize;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 10px 10px;
+            transition: background 0.2s;
+        }
+
+        .tb-block .resize-handle:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Colores de bloques */
+        .tb-block.color-1 {
+            background: #bb86fc;
+            color: #121212;
+        }
+        .tb-block.color-2 {
+            background: #03dac6;
+            color: #121212;
+        }
+        .tb-block.color-3 {
+            background: #ff6b6b;
+            color: #121212;
+        }
+        .tb-block.color-4 {
+            background: #f9ca24;
+            color: #121212;
+        }
+        .tb-block.color-5 {
+            background: #6ab04c;
+            color: #121212;
+        }
+        .tb-block.color-6 {
+            background: #686de0;
+            color: #121212;
+        }
+        .tb-block.color-7 {
+            background: #e056a0;
+            color: #121212;
+        }
+        .tb-block.color-8 {
+            background: #f0932b;
+            color: #121212;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 860px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .left-column,
+            .right-column {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+            .timeblocking-container {
+                height: 480px;
+                padding-left: 50px;
+            }
+            .time-label {
+                height: 60px;
+                font-size: 0.65rem;
+            }
+            .timeblocking-form {
+                flex-wrap: wrap;
+            }
+            .timeblocking-form input[type="time"] {
+                width: 80px;
+            }
+            .timeblocking-form input[type="number"] {
+                width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1>✦ Productivity Dashboard</h1>
+        </header>
+
+        <main class="dashboard">
+            <!-- Columna izquierda -->
+            <div class="left-column">
+                <!-- Pomodoro -->
+                <section class="panel panel-pomodoro">
+                    <div class="panel-header">
+                        <h2>Pomodoro</h2>
+                        <button class="reset-btn" data-module="pomodoro" title="Reiniciar Pomodoro">↺</button>
+                    </div>
+                    <div class="pomodoro-display">
+                        <span class="timer" id="pomodoroTimer">25:00</span>
+                    </div>
+                    <div class="pomodoro-controls">
+                        <button class="btn-work" id="btnWork">Trabajo</button>
+                        <button class="btn-rest" id="btnRest">Descanso</button>
+                    </div>
+                    <div class="pomodoro-status">
+                        <span id="pomodoroStatus">⏸ Detenido</span>
+                    </div>
+                </section>
+
+                <!-- Checklist -->
+                <section class="panel panel-checklist">
+                    <div class="panel-header">
+                        <h2>Checklist</h2>
+                        <button class="reset-btn" data-module="checklist" title="Reiniciar Checklist">↺</button>
+                    </div>
+                    <div class="checklist-input">
+                        <input type="text" id="taskInput" placeholder="Nueva tarea..." />
+                        <button id="addTaskBtn">+</button>
+                    </div>
+                    <div class="checklist-lists">
+                        <div class="task-list">
+                            <h3>Activas</h3>
+                            <ul id="activeTasks"></ul>
+                        </div>
+                        <div class="task-list completed">
+                            <h3>Completadas</h3>
+                            <ul id="completedTasks"></ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Columna derecha -->
+            <div class="right-column">
+                <section class="panel panel-timeblocking">
+                    <div class="panel-header">
+                        <h2>Timeblocking</h2>
+                        <button class="reset-btn" data-module="timeblocking" title="Reiniciar Timeblocking">↺</button>
+                    </div>
+                    <div class="timeblocking-form">
+                        <input type="time" id="tbStart" value="09:00" />
+                        <input type="number" id="tbDuration" value="60" min="15" step="15" />
+                        <input type="text" id="tbTitle" placeholder="Título" />
+                        <button id="addBlockBtn">+ Añadir</button>
+                    </div>
+                    <div class="timeblocking-container">
+                        <div class="time-labels" id="timeLabels"></div>
+                        <div class="time-grid" id="timeGrid"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ============================================================
+        //  MÓDULO POMODORO
+        // ============================================================
+        (function() {
+            const timerEl = document.getElementById('pomodoroTimer');
+            const statusEl = document.getElementById('pomodoroStatus');
+            const btnWork = document.getElementById('btnWork');
+            const btnRest = document.getElementById('btnRest');
+            const resetBtn = document.querySelector('[data-module="pomodoro"]');
+
+            let timerInterval = null;
+            let remainingSeconds = 25 * 60;
+            const WORK_TIME = 25 * 60;
+            const REST_TIME = 5 * 60;
+            let currentMode = 'stopped';
+
+            function formatTime(seconds) {
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            }
+
+            function updateDisplay() {
+                timerEl.textContent = formatTime(remainingSeconds);
+            }
+
+            function stopTimer() {
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }
+
+            function startTimer(mode) {
+                stopTimer();
+                if (mode === 'work') {
+                    remainingSeconds = WORK_TIME;
+                    currentMode = 'work';
+                    statusEl.textContent = '⏳ Trabajando...';
+                } else if (mode === 'rest') {
+                    remainingSeconds = REST_TIME;
+                    currentMode = 'rest';
+                    statusEl.textContent = '☕ Descansando...';
+                } else {
+                    return;
+                }
+                updateDisplay();
+
+                timerInterval = setInterval(() => {
+                    remainingSeconds--;
+                    updateDisplay();
+                    if (remainingSeconds <= 0) {
+                        stopTimer();
+                        currentMode = 'stopped';
+                        statusEl.textContent = '⏸ Tiempo finalizado';
+                        timerEl.style.color = '#ff6b6b';
+                        setTimeout(() => (timerEl.style.color = '#ffffff'), 500);
+                    }
+                }, 1000);
+            }
+
+            function reset() {
+                stopTimer();
+                currentMode = 'stopped';
+                remainingSeconds = WORK_TIME;
+                updateDisplay();
+                statusEl.textContent = '⏸ Detenido';
+                timerEl.style.color = '#ffffff';
+            }
+
+            btnWork.addEventListener('click', () => startTimer('work'));
+            btnRest.addEventListener('click', () => startTimer('rest'));
+            resetBtn.addEventListener('click', reset);
+
+            reset();
+        })();
+
+        // ============================================================
+        //  MÓDULO CHECKLIST
+        // ============================================================
+        (function() {
+            const STORAGE_KEY = 'checklist_tasks';
+            let tasks = [];
+
+            const taskInput = document.getElementById('taskInput');
+            const addBtn = document.getElementById('addTaskBtn');
+            const activeList = document.getElementById('activeTasks');
+            const completedList = document.getElementById('completedTasks');
+            const resetBtn = document.querySelector('[data-module="checklist"]');
+
+            function loadTasks() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    try {
+                        tasks = JSON.parse(stored);
+                    } catch (e) {
+                        tasks = [];
+                    }
+                } else {
+                    tasks = [];
+                }
+                render();
+            }
+
+            function saveTasks() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+            }
+
+            function render() {
+                const active = tasks.filter(t => !t.completed);
+                const completed = tasks.filter(t => t.completed);
+
+                activeList.innerHTML = '';
+                completedList.innerHTML = '';
+
+                active.forEach(task => createTaskElement(task, activeList));
+                completed.forEach(task => createTaskElement(task, completedList));
+            }
+
+            function createTaskElement(task, list) {
+                const li = document.createElement('li');
+                li.dataset.id = task.id;
+
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.checked = task.completed;
+                cb.addEventListener('change', () => {
+                    task.completed = cb.checked;
+                    saveTasks();
+                    render();
+                });
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'task-text' + (task.completed ? ' completed' : '');
+                textSpan.textContent = task.text;
+                textSpan.contentEditable = false;
+
+                textSpan.addEventListener('dblclick', () => {
+                    if (task.completed) return;
+                    textSpan.contentEditable = true;
+                    textSpan.classList.add('editing');
+                    textSpan.focus();
+                    const range = document.createRange();
+                    range.selectNodeContents(textSpan);
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                });
+
+                textSpan.addEventListener('blur', () => {
+                    if (textSpan.contentEditable === 'true') {
+                        const newText = textSpan.textContent.trim();
+                        if (newText.length > 0) {
+                            task.text = newText;
+                            saveTasks();
+                            render();
+                        } else {
+                            render();
+                        }
+                    }
+                });
+
+                textSpan.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        textSpan.blur();
+                    }
+                    if (e.key === 'Escape') {
+                        textSpan.textContent = task.text;
+                        textSpan.blur();
+                    }
+                });
+
+                const actions = document.createElement('div');
+                actions.className = 'task-actions';
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = '✕';
+                deleteBtn.title = 'Eliminar tarea';
+                deleteBtn.addEventListener('click', () => {
+                    tasks = tasks.filter(t => t.id !== task.id);
+                    saveTasks();
+                    render();
+                });
+
+                actions.appendChild(deleteBtn);
+
+                li.appendChild(cb);
+                li.appendChild(textSpan);
+                li.appendChild(actions);
+                list.appendChild(li);
+            }
+
+            function addTask(text) {
+                text = text.trim();
+                if (!text) return;
+                const newTask = {
+                    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+                    text: text,
+                    completed: false,
+                };
+                tasks.push(newTask);
+                saveTasks();
+                render();
+                taskInput.value = '';
+                taskInput.focus();
+            }
+
+            function reset() {
+                if (confirm('¿Eliminar todas las tareas?')) {
+                    tasks = [];
+                    saveTasks();
+                    render();
+                }
+            }
+
+            addBtn.addEventListener('click', () => addTask(taskInput.value));
+            taskInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addTask(taskInput.value);
+                }
+            });
+            resetBtn.addEventListener('click', reset);
+
+            loadTasks();
+        })();
+
+        // ============================================================
+        //  MÓDULO TIMEBLOCKING
+        // ============================================================
+        (function() {
+            const STORAGE_KEY = 'timeblocking_blocks';
+            let blocks = [];
+            let nextId = 1;
+
+            const grid = document.getElementById('timeGrid');
+            const labelsContainer = document.getElementById('timeLabels');
+            const tbStart = document.getElementById('tbStart');
+            const tbDuration = document.getElementById('tbDuration');
+            const tbTitle = document.getElementById('tbTitle');
+            const addBtn = document.getElementById('addBlockBtn');
+            const resetBtn = document.querySelector('[data-module="timeblocking"]');
+
+            const HOUR_START = 6;
+            const HOUR_END = 22;
+            const HOUR_HEIGHT = 60;
+            const COLORS = ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8'];
+
+            function renderLabels() {
+                labelsContainer.innerHTML = '';
+                for (let h = HOUR_START; h <= HOUR_END; h++) {
+                    const label = document.createElement('div');
+                    label.className = 'time-label';
+                    const ampm = h < 12 ? 'AM' : 'PM';
+                    const displayHour = h > 12 ? h - 12 : h;
+                    label.textContent = `${displayHour}:00 ${ampm}`;
+                    labelsContainer.appendChild(label);
+                }
+                const totalHours = HOUR_END - HOUR_START;
+                const container = document.querySelector('.timeblocking-container');
+                container.style.height = `${totalHours * HOUR_HEIGHT + 20}px`;
+            }
+
+            function loadBlocks() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    try {
+                        blocks = JSON.parse(stored);
+                        blocks.forEach(b => { if (!b.id) b.id = nextId++; });
+                        nextId = blocks.reduce((max, b) => Math.max(max, b.id), 0) + 1;
+                    } catch (e) {
+                        blocks = [];
+                    }
+                } else {
+                    blocks = [];
+                }
+                renderBlocks();
+            }
+
+            function saveBlocks() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(blocks));
+            }
+
+            function renderBlocks() {
+                grid.innerHTML = '';
+                blocks.forEach(block => {
+                    const el = createBlockElement(block);
+                    grid.appendChild(el);
+                });
+            }
+
+            function createBlockElement(block) {
+                const el = document.createElement('div');
+                el.className = `tb-block ${block.color || 'color-1'}`;
+                el.dataset.id = block.id;
+
+                const topPx = (block.start - HOUR_START) * HOUR_HEIGHT;
+                const heightPx = (block.duration / 60) * HOUR_HEIGHT;
+                el.style.top = `${topPx}px`;
+                el.style.height = `${heightPx}px`;
+                el.style.width = '100%';
+
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'tb-title';
+                titleSpan.textContent = block.title || 'Sin título';
+                el.appendChild(titleSpan);
+
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'tb-time';
+                const startStr = formatHour(block.start);
+                const endStr = formatHour(block.start + block.duration / 60);
+                timeSpan.textContent = `${startStr} - ${endStr}`;
+                el.appendChild(timeSpan);
+
+                const del = document.createElement('button');
+                del.className = 'tb-delete';
+                del.textContent = '✕';
+                del.addEventListener('mousedown', (e) => e.stopPropagation());
+                del.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteBlock(block.id);
+                });
+                el.appendChild(del);
+
+                const handle = document.createElement('div');
+                handle.className = 'resize-handle';
+                handle.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    startResize(e, block);
+                });
+                el.appendChild(handle);
+
+                el.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('.resize-handle') || e.target.closest('.tb-delete')) return;
+                    startDrag(e, block);
+                });
+
+                return el;
+            }
+
+            function formatHour(h) {
+                const hours = Math.floor(h);
+                const minutes = Math.round((h - hours) * 60);
+                const ampm = hours < 12 ? 'AM' : 'PM';
+                const displayHour = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+                return `${displayHour}:${String(minutes).padStart(2, '0')} ${ampm}`;
+            }
+
+            function addBlock(start, duration, title) {
+                if (duration < 15) duration = 15;
+                const newBlock = {
+                    id: nextId++,
+                    start: start,
+                    duration: duration,
+                    title: title || 'Sin título',
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                };
+                blocks.push(newBlock);
+                saveBlocks();
+                renderBlocks();
+            }
+
+            function deleteBlock(id) {
+                blocks = blocks.filter(b => b.id !== id);
+                saveBlocks();
+                renderBlocks();
+            }
+
+            let dragData = null;
+
+            function startDrag(e, block) {
+                const rect = grid.getBoundingClientRect();
+                const startY = e.clientY;
+                const startTop = block.start;
+
+                dragData = {
+                    block: block,
+                    startY: startY,
+                    startTop: startTop,
+                    type: 'drag'
+                };
+
+                document.addEventListener('mousemove', onDragMove);
+                document.addEventListener('mouseup', onDragEnd);
+                e.preventDefault();
+            }
+
+            function startResize(e, block) {
+                const startY = e.clientY;
+                const startHeight = block.duration / 60;
+
+                dragData = {
+                    block: block,
+                    startY: startY,
+                    startHeight: startHeight,
+                    type: 'resize'
+                };
+
+                document.addEventListener('mousemove', onDragMove);
+                document.addEventListener('mouseup', onDragEnd);
+                e.preventDefault();
+            }
+
+            function onDragMove(e) {
+                if (!dragData) return;
+                const { block, startY, type } = dragData;
+                const deltaY = (e.clientY - startY) / HOUR_HEIGHT;
+
+                if (type === 'drag') {
+                    let newStart = dragData.startTop + deltaY;
+                    newStart = Math.max(HOUR_START, Math.min(HOUR_END - block.duration / 60, newStart));
+                    newStart = Math.round(newStart * 4) / 4;
+                    block.start = newStart;
+                    saveBlocks();
+                    renderBlocks();
+                } else if (type === 'resize') {
+                    let newDurationHours = dragData.startHeight + deltaY;
+                    newDurationHours = Math.max(0.25, Math.min(HOUR_END - HOUR_START, newDurationHours));
+                    let newDuration = Math.round(newDurationHours * 4) / 4;
+                    if (block.start + newDuration > HOUR_END) {
+                        newDuration = HOUR_END - block.start;
+                    }
+                    block.duration = newDuration * 60;
+                    saveBlocks();
+                    renderBlocks();
+                }
+            }
+
+            function onDragEnd() {
+                document.removeEventListener('mousemove', onDragMove);
+                document.removeEventListener('mouseup', onDragEnd);
+                dragData = null;
+            }
+
+            function addFromForm() {
+                const timeVal = tbStart.value;
+                if (!timeVal) return;
+                const [hour, minute] = timeVal.split(':').map(Number);
+                let start = hour + minute / 60;
+                if (start < HOUR_START) start = HOUR_START;
+                if (start > HOUR_END) start = HOUR_END;
+
+                let duration = parseInt(tbDuration.value, 10);
+                if (isNaN(duration) || duration < 15) duration = 60;
+                if (start + duration / 60 > HOUR_END) {
+                    duration = (HOUR_END - start) * 60;
+                    if (duration < 15) {
+                        alert('No hay suficiente tiempo en el día para este bloque.');
+                        return;
+                    }
+                }
+                const title = tbTitle.value.trim() || 'Sin título';
+                addBlock(start, duration, title);
+                tbTitle.value = '';
+            }
+
+            function reset() {
+                if (confirm('¿Eliminar todos los bloques de tiempo?')) {
+                    blocks = [];
+                    saveBlocks();
+                    renderBlocks();
+                }
+            }
+
+            renderLabels();
+            loadBlocks();
+
+            addBtn.addEventListener('click', addFromForm);
+
+            grid.addEventListener('dblclick', (e) => {
+                const rect = grid.getBoundingClientRect();
+                const y = e.clientY - rect.top;
+                const hours = y / HOUR_HEIGHT + HOUR_START;
+                let start = Math.round(hours * 4) / 4;
+                if (start < HOUR_START) start = HOUR_START;
+                if (start > HOUR_END - 0.25) start = HOUR_END - 0.25;
+                addBlock(start, 60, 'Nuevo bloque');
+            });
+
+            resetBtn.addEventListener('click', reset);
+        })();
+    </script>
+</body>
+</html>
