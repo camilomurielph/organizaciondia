@@ -628,7 +628,7 @@
                         <button class="reset-btn" data-module="timeblocking" title="Reiniciar Timeblocking">↺</button>
                     </div>
                     <div class="timeblocking-form">
-                        <input type="time" id="tbStart" value="09:00" />
+                        <input type="time" id="tbStart" value="10:00" />
                         <input type="number" id="tbDuration" value="60" min="15" step="15" />
                         <input type="text" id="tbTitle" placeholder="Título" />
                         <button id="addBlockBtn">+ Añadir</button>
@@ -873,7 +873,7 @@
         })();
 
         // ============================================================
-        //  MÓDULO TIMEBLOCKING
+        //  MÓDULO TIMEBLOCKING - MODIFICADO: RANGO 10 AM - 5 PM
         // ============================================================
         (function() {
             const STORAGE_KEY = 'timeblocking_blocks';
@@ -888,8 +888,9 @@
             const addBtn = document.getElementById('addBlockBtn');
             const resetBtn = document.querySelector('[data-module="timeblocking"]');
 
-            const HOUR_START = 6;
-            const HOUR_END = 22;
+            // NUEVO RANGO: 10 AM a 5 PM (10 a 17)
+            const HOUR_START = 10;
+            const HOUR_END = 17;
             const HOUR_HEIGHT = 60;
             const COLORS = ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7', 'color-8'];
 
@@ -1084,15 +1085,17 @@
                 if (!timeVal) return;
                 const [hour, minute] = timeVal.split(':').map(Number);
                 let start = hour + minute / 60;
+                // Ajustar al rango permitido
                 if (start < HOUR_START) start = HOUR_START;
                 if (start > HOUR_END) start = HOUR_END;
 
                 let duration = parseInt(tbDuration.value, 10);
                 if (isNaN(duration) || duration < 15) duration = 60;
+                // Asegurar que no exceda el final
                 if (start + duration / 60 > HOUR_END) {
                     duration = (HOUR_END - start) * 60;
                     if (duration < 15) {
-                        alert('No hay suficiente tiempo en el día para este bloque.');
+                        alert('No hay suficiente tiempo en el horario para este bloque.');
                         return;
                     }
                 }
